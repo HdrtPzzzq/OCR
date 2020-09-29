@@ -1,6 +1,9 @@
 #include <stdio.h>
 
+char *greetings;
+greetings = "Hello World";
+
 int main (void)
 {
-	printf("Hello World");
+	printf("%s", greetings);
 }
