@@ -1,8 +1,7 @@
 #include <stdio.h>
-
-char *greetings = "Hello World";
+#include "../include/loadbm.h"
 
 int main (void)
 {
-    printf("%s\n", greetings);
+    hello();
 }
