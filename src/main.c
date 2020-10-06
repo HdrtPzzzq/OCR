@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include "loadbm.h"
+#include "loadBMP.h"
 
-int main() 
+int main()
 {
-  loadBMP();
-  hello();
+    hello();
 }
