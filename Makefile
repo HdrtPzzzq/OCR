@@ -20,5 +20,6 @@ clean:
 	${RM} ${OBJ}
 	${RM} ${DEP}
 	${RM} main
+	${RM} main.d
 
 -include ${DEP}
