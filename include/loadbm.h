@@ -1,1 +1,2 @@
+int loadBMP();
 int hello();
