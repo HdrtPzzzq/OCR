@@ -2,24 +2,24 @@
 
 CC = gcc
 CPPFLAGS = -MMD
-CFLAGS = -Wall -Wextra -std=c99 $(shell pkg-config --cflags sdl) -Iinclude
+CFLAGS = -Wall -Wextra -std=c99 -Iinclude $(shell pkg-config --cflags sdl)
 LDFLAGS =
 LDLIBS = $(shell pkg-config --libs sdl)
 
+OUT = out
 SRC = $(shell find ./src -name *.c)
-OBJ = ${SRC:.c=.o}
-DEP = ${SRC:.c=.d}
+OBJ = $(SRC:.c=.o)
+DEP = $(SRC:.c=.d)
 
-all: main
+.PHONY: clean all
+all: exec
 
-main: ${OBJ}
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(SRC) -o main $(LDLIBS)
+exec: $(OBJ)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(SRC) -o $(OUT) $(LDLIBS) $(LDFLAGS)
 
-.PHONY: clean
 clean:
-	${RM} ${OBJ}
-	${RM} ${DEP}
-	${RM} main
-	${RM} main.d
+	$(RM) $(OBJ)
+	$(RM) $(DEP)
+	$(RM) $(OUT) $(OUT).d
 
--include ${DEP}
+-include $(DEP)

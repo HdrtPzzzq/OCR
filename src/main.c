@@ -3,5 +3,5 @@
 
 int main()
 {
-    hello();
+    loadBMP("images/LAND2.BMP");
 }

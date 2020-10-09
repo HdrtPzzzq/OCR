@@ -2,4 +2,4 @@
 *.o
 images/*
 bin/*
-main
+out
