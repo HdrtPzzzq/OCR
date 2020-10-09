@@ -1,2 +1,2 @@
-int loadBMP();
+int displayBMP();
 int hello();

@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <SDL/SDL.h>
 
-int loadBMP(char *path)
+int displayBMP(char *path)
 {
     // Initialize screen, image and window
     SDL_Surface *screen = NULL;
