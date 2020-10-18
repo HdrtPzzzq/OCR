@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "loadBMP.h"
+#include "displayBMP.h"
+#include "pixelBMP.h"
 
 int main()
 {
