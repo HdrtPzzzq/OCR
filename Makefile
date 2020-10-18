@@ -2,7 +2,7 @@
 
 CC = gcc
 CPPFLAGS = -MMD
-CFLAGS = -Wall -Wextra -std=c99 -Iinclude $(shell pkg-config --cflags sdl)
+CFLAGS = -Wall -Wextra -Werror -std=c99 -Iinclude $(shell pkg-config --cflags sdl)
 LDFLAGS =
 LDLIBS = $(shell pkg-config --libs sdl)
 
@@ -15,7 +15,7 @@ DEP = $(SRC:.c=.d)
 all: exec
 
 exec: $(OBJ)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(SRC) -o $(OUT) $(LDLIBS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $(OUT) $(SRC) $(LDLIBS) $(LDFLAGS)
 
 clean:
 	$(RM) $(OBJ)

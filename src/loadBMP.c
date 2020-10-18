@@ -1,12 +1,19 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <SDL/SDL.h>
+#include "loadBMP.h"
 
-int displayBMP(char *path)
+SDL_Surface *loadBMP(char *path)
 {
-    // Initialize screen, image and window
-    SDL_Surface *screen = NULL;
+    // Initialize the image
     SDL_Surface *image = NULL;
+    // Load the image into image
+    image = SDL_LoadBMP(path);
+    // Return the image as a SDL_Surface
+    return image;
+}
+
+int displayBMP(SDL_Surface *image)
+{
+    // Initialize screen and window
+    SDL_Surface *screen = NULL;
     SDL_Rect window;
 
     window.x = 0;
@@ -16,9 +23,6 @@ int displayBMP(char *path)
 
     // Starting the screen
     screen = SDL_SetVideoMode(1024, 768, 32, SDL_HWSURFACE);
-
-    // Loading a BMP in a surface
-    image = SDL_LoadBMP(path);
 
     // Merging image and screen
     SDL_BlitSurface(image, NULL, screen, &window);
@@ -66,11 +70,4 @@ Uint32 getpixel(SDL_Surface *image, int x, int y)
             // To avoid warnings
             return 0;
     }
-}
-
-
-int hello ()
-{
-    printf ("Hello World\n");
-    return 0;
 }
