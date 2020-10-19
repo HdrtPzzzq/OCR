@@ -15,9 +15,9 @@ Uint32 grey_level_pixel(Uint32 pixel, SDL_PixelFormat *fmt )
 void grey_level(SDL_Surface *surface, SDL_PixelFormat *fmt)
 {
     SDL_LockSurface(surface);
-    for(int i=0;i<surface->h;i++)
+    for(int i=0;i<surface->w;i++)
     {
-        for(int j=0;j<surface->w;j++)
+        for(int j=0;j<surface->h;j++)
         {
             putpixel(surface,i,j,grey_level_pixel(getpixel(surface,i,j),fmt));
         }
