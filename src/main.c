@@ -4,6 +4,7 @@
 #include "displayBMP.h"
 #include "pixelBMP.h"
 #include"grey_level.h"
+#include"binarization.h"
 
 char *path = "../images/LAND2.BMP";
 
@@ -13,5 +14,6 @@ int main()
     SDL_Surface *image = loadBMP(path);
     SDL_PixelFormat *fmt = image->format;
     grey_level(image,fmt);
+    binarization(image,fmt,128);
     displayBMP(image);
 }
