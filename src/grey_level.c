@@ -8,5 +8,6 @@ Uint32 grey_level(Uint32 pixel)
     SDL_GetRBG(pixel,format,&color.r,&color.g,&color.b);
     //get the level of grey of the pixel by the next formule using the
     //componants of color.
-    return (Uint32)(color.r * 0,2126 + color.v * 0,7152 + color.b * 0,0722);
+    Uint8 = (color.r * 0,2126 + color.v * 0,7152 + color.b * 0,0722);
+    return SDL_MapRGB(s->format,gris,gris,gris);
 }
