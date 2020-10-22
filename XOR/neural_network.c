@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "activation.h"
 
 //======INIT PART======//
@@ -90,6 +92,7 @@ double training_outputs[numTrainingSets][numOutputs] = { {0.0f},
 // MAIN TRAINING LOOP
 
 // Iterate through the entire training for a number of epochs
+int main(){
 
 for (int n=0; n < epochs; n++)
 {
@@ -168,5 +171,8 @@ for (int n=0; n < epochs; n++)
         }
     }
 
+
+    return 0;
+}
 
 
