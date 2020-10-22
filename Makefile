@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c99 -Iinclude $(shell pkg-config --cflags sd
 LDFLAGS =
 LDLIBS = $(shell pkg-config --libs sdl)
 
-OUT = out
+OUT = main
 SRC = $(shell find ./src -name *.c)
 OBJ = $(SRC:.c=.o)
 DEP = $(SRC:.c=.d)
@@ -15,11 +15,11 @@ DEP = $(SRC:.c=.d)
 all: exec
 
 exec: $(OBJ)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $(OUT) $(SRC) $(LDLIBS) $(LDFLAGS)
+	$(CC) -o $(OUT) $(OBJ) $(LDLIBS) $(LDFLAGS)
 
 clean:
 	$(RM) $(OBJ)
 	$(RM) $(DEP)
-	$(RM) $(OUT) $(OUT).d
+	$(RM) $(OUT)
 
 -include $(DEP)
