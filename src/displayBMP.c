@@ -12,7 +12,8 @@ int displayBMP(SDL_Surface *image)
     SDL_Init(SDL_INIT_VIDEO);
 
     // Starting the screen
-    screen = SDL_SetVideoMode(1024, 768, 32, SDL_HWSURFACE);
+    screen = SDL_SetVideoMode
+    (image->w,image->h, image->format->BitsPerPixel, SDL_ANYFORMAT);
 
     // Merging image and screen
     SDL_BlitSurface(image, NULL, screen, &window);

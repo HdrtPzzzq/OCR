@@ -5,15 +5,16 @@
 #include "pixelBMP.h"
 #include"grey_level.h"
 #include"binarization.h"
-
-char *path = "../images/LAND2.BMP";
+#include"segmentation.h"
 
 int main()
 {
-    char *path = "images/LAND2.BMP";
+    char *path = "images/lorem.bmp";
     SDL_Surface *image = loadBMP(path);
+    //printf("%d,%d,%u",image->w,image->h,image->format->BytesPerPixel);
     SDL_PixelFormat *fmt = image->format;
     grey_level(image,fmt);
     binarization(image,fmt,128);
+    segmentation_ligne(image,fmt);
     displayBMP(image);
 }
