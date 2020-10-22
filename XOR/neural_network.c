@@ -1,28 +1,31 @@
-#include "neural_network.h"
 #include "activation.h"
 
+//======INIT PART======//
 
 //NUMBER OF NEURONS
 //in XOR we have 2 inputs, 2 neurons in hidden layer, and 1 output
-static const int numInputs = 2;
-static const int numHiddenNodes = 2;
-static const int numOutputs = 1;
+static const int numInputs = 2;         //2 inputs nodes
+static const int numHiddenNodes = 2;    //2 neurones
+static const int numOutputs = 1;        //1 output node
 
 //LAYERS
 //(1 hidden of 2 neurons, and 1 output layer of 1 node)
-double hiddenLayer[numHiddenNodes];
-double outputLayer[numOutputs];
+double hiddenLayer[numHiddenNodes];     //1 hidden layer of 2 neurons
+double outputLayer[numOutputs];         //1 output layer with 1 neuron
 
 //BIAS
-double hiddenLayerBias[numHiddenNodes];
-double outputLayerBias[numOutputs];
+double hiddenLayerBias[numHiddenNodes]; //2 neurons -> 2 biases
+double outputLayerBias[numOutputs];     //1 ouput   -> 1 bias
 
 //WEIGHTS
 //the weights of a node is the are the values of the links between it and
 //nodes of the precedent layer
 double hiddenWeights[numInputs][numHiddenNodes];
-double outputWeights[numhiddenNodes][numOutputs];
+double outputWeights[numHiddenNodes][numOutputs];
 
+
+
+//======FUNCTIONS CALLS=======//
 
 //ACTIVATION functions call
 //If I want to change the type of activation function,
@@ -38,8 +41,37 @@ double dactivation(double x)    //derivative of activation function
     return dSigmoid(x);
 }
 
+//returns an size_t between 0 and a
+size_t RandomSizet(size_t a)
+{
+    return (size_t)rand() % a;
+}
 
-//TRAINING SET
+
+//Shuffle an int array
+void RandArray(int arr[])
+{
+    size_t l = sizeof(arr);
+    size_t nshuffle = l*3;  //shuffles array length*3 times
+    size_t rand1;
+    size_t rand2;
+    int val;
+
+    size_t i;
+    for(i = 0; i < nshuffle; i++)
+    {
+        rand1 = RandomSizet(l);
+        rand2 = RandomSizet(l);
+        val = arr[rand1];
+        arr[rand1] = arr[rand2];
+        arr[rand2] = val;
+    }
+
+}
+
+
+//=======TRAINING SET======//
+
 
 static const int numTrainingSets = 4;   //(0,0),(0,1),(1,0),(1,1) for XOR
 
@@ -59,14 +91,14 @@ double training_outputs[numTrainingSets][numOutputs] = { {0.0f},
 
 // Iterate through the entire training for a number of epochs
 
-for (int n=0; n < epochs; n++) 
+for (int n=0; n < epochs; n++)
 {
   // As per SGD(stochastic gradient descent),
-  //shuffle the order of the training set
+  // we have to randomize the order of the training set
   int trainingSetOrder[] = {0,1,2,3};
-  shuffle(trainingSetOrder,numTrainingSets);
+  RandArr(trainingSetOrder, numTrainingSets);
 
-  // Cycle through each of the training set elements
+  // For each epoch we use each element of the training set (4 for XOR)
   for (int x=0; x<numTrainingSets; x++) 
   {
     int i = trainingSetOrder[x];
