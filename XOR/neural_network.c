@@ -100,10 +100,13 @@ double training_outputs[numTrainingSets][numOutputs] = { {0.0f},
 int main()
 {
 
-    long epochs = 1000;
+    long Maxepoch = 3000;
     double lr = 0.1;                //learning rate
-    for (long n=0; n < epochs; n++)
+    for (long epoch=0; epoch < Maxepoch; epoch++)
     {
+
+        double Error;//print each 100 epoch
+
         // As per SGD(stochastic gradient descent),
         // we have to randomize the order of the training set
         int trainingSetOrder[] = {0,1,2,3};
@@ -143,6 +146,7 @@ int main()
                 double dError = (training_outputs[i][j]-outputLayer[j]);
                 deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
             }
+            Error = ;
 
             // Compute change in hidden weights
             double deltaHidden[numHiddenNodes];
@@ -179,6 +183,9 @@ int main()
             }
 
         }
+
+        if( epoch%100 == 0 ) fprintf(stdout, "\nEpoch %-5lu :   Error = %f", epoch, Error) ;
+        //if( Error < 0.0004 ) break ;  /* stop learning when 'near enough' */
     }
 
     return 0;
