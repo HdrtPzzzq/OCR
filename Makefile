@@ -4,18 +4,32 @@ CC = gcc
 CPPFLAGS = -MMD
 CFLAGS = -Wall -Wextra -Werror -std=c99 -Iinclude $(shell pkg-config --cflags sdl)
 LDFLAGS =
-LDLIBS = $(shell pkg-config --libs sdl)
+LDLIBS = -lm $(shell pkg-config --libs sdl)
 
-OUT = main
-SRC = $(shell find ./src -name *.c)
-OBJ = $(SRC:.c=.o)
-DEP = $(SRC:.c=.d)
+OUT = main xor img
 
-.PHONY: clean all
-all: exec
+SRC = src/main.c
 
-exec: $(OBJ)
-	$(CC) -o $(OUT) $(OBJ) $(LDLIBS) $(LDFLAGS)
+IMG = $(shell find ./src/IMG -name *.c)
+XOR = $(shell find ./src/XOR -name *.c)
+
+OIMG = $(IMG:.c=.o)
+OXOR = $(XOR:.c=.o)
+
+OBJ = src/main.o $(OXOR) $(OIMG)
+DEP = $(SRC:.c=.d) $(XOR:.c=.d) $(IMG:.c=.d)
+
+.PHONY: all main XOR IMG clean
+all: main
+
+main: $(OBJ)
+	$(CC) -o main $(OBJ) $(LDLIBS) $(LDFLAGS)
+
+XOR: $(OXOR)
+	$(CC) -o xor $(OXOR) $(LDLIBS) $(LDFLAGS)
+
+IMG: $(OIMG)
+	$(CC) -o img $(OIMG) $(LDLIBS) $(LDFLAGS)
 
 clean:
 	$(RM) $(OBJ)
