@@ -1,0 +1,5 @@
+*.d
+*.o
+images/*
+bin/*
+out
