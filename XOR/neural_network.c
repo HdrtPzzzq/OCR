@@ -57,9 +57,8 @@ size_t RandomSizet(size_t a)
 
 
 //Shuffle an int array
-void RandArray(int arr[])
+void RandArray(int arr[], int l)
 {
-    size_t l = sizeof(arr);
     size_t nshuffle = l*3;  //shuffles array length*3 times
     size_t rand1;
     size_t rand2;
@@ -108,7 +107,7 @@ int main()
         // As per SGD(stochastic gradient descent),
         // we have to randomize the order of the training set
         int trainingSetOrder[] = {0,1,2,3};
-        RandArr(trainingSetOrder, numTrainingSets);
+        RandArray(trainingSetOrder, numTrainingSets);
 
         // For each epoch we use each element of the training set (4 for XOR)
         for (int x=0; x<numTrainingSets; x++) 
