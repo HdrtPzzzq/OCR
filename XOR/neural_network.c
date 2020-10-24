@@ -2,13 +2,19 @@
 #include <stdlib.h>
 #include "activation.h"
 
+#define numInputs 2
+#define numHiddenNodes 2
+#define numOutputs 1
+
+#define numTrainingSets 4
+
 //======INIT PART======//
 
 //NUMBER OF NEURONS
 //in XOR we have 2 inputs, 2 neurons in hidden layer, and 1 output
-static const int numInputs = 2;         //2 inputs nodes
-static const int numHiddenNodes = 2;    //2 neurones
-static const int numOutputs = 1;        //1 output node
+//static const int numInputs = 2;         //2 inputs nodes
+//static const int numHiddenNodes = 2;    //2 neurones
+//static const int numOutputs = 1;        //1 output node
 
 //LAYERS
 //(1 hidden of 2 neurons, and 1 output layer of 1 node)
@@ -75,102 +81,106 @@ void RandArray(int arr[])
 //=======TRAINING SET======//
 
 
-static const int numTrainingSets = 4;   //(0,0),(0,1),(1,0),(1,1) for XOR
+//static const int numTrainingSets = 4;   //(0,0),(0,1),(1,0),(1,1) for XOR
 
 //in each "tuple", the first element is for the first input node
 //and the second element for the second input
 double training_inputs[numTrainingSets][numInputs] = {{0.0f,0.0f},{1.0f,0.0f},
-                                                      {0.0f,1.0f},{1.0f,1.0f}};
+    {0.0f,1.0f},{1.0f,1.0f}};
 
 //1 output, 4 training sets
 double training_outputs[numTrainingSets][numOutputs] = { {0.0f},
-                                                         {1.0f},
-                                                         {1.0f},
-                                                         {0.0f} };
+    {1.0f},
+    {1.0f},
+    {0.0f} };
 
 
 // MAIN TRAINING LOOP
 
 // Iterate through the entire training for a number of epochs
-int main(){
-
-for (int n=0; n < epochs; n++)
+int main()
 {
-  // As per SGD(stochastic gradient descent),
-  // we have to randomize the order of the training set
-  int trainingSetOrder[] = {0,1,2,3};
-  RandArr(trainingSetOrder, numTrainingSets);
 
-  // For each epoch we use each element of the training set (4 for XOR)
-  for (int x=0; x<numTrainingSets; x++) 
-  {
-    int i = trainingSetOrder[x];
-
-    // Compute hidden layer activation
-    for (int j=0; j<numHiddenNodes; j++) 
+    long epochs = 1000;
+    double lr = 0.1;                //learning rate
+    for (long n=0; n < epochs; n++)
     {
-        double activation=hiddenLayerBias[j];
-        for (int k=0; k<numInputs; k++) 
+        // As per SGD(stochastic gradient descent),
+        // we have to randomize the order of the training set
+        int trainingSetOrder[] = {0,1,2,3};
+        RandArr(trainingSetOrder, numTrainingSets);
+
+        // For each epoch we use each element of the training set (4 for XOR)
+        for (int x=0; x<numTrainingSets; x++) 
         {
-            activation+=training_inputs[i][k]*hiddenWeights[k][j];
+            int i = trainingSetOrder[x];
+
+            // Compute hidden layer activation
+            for (int j=0; j<numHiddenNodes; j++) 
+            {
+                double activation=hiddenLayerBias[j];
+                for (int k=0; k<numInputs; k++) 
+                {
+                    activation+=training_inputs[i][k]*hiddenWeights[k][j];
+                }
+                hiddenLayer[j] = sigmoid(activation);
+            }
+
+            // Compute output layer activation
+            for (int j=0; j<numOutputs; j++) 
+            {
+                double activation=outputLayerBias[j];
+                for (int k=0; k<numHiddenNodes; k++) 
+                {
+                    activation+=hiddenLayer[k]*outputWeights[k][j];
+                }
+                outputLayer[j] = sigmoid(activation);
+            }
+
+            // Compute change in output weights
+            double deltaOutput[numOutputs];
+            for (int j=0; j<numOutputs; j++) 
+            {
+                double dError = (training_outputs[i][j]-outputLayer[j]);
+                deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
+            }
+
+            // Compute change in hidden weights
+            double deltaHidden[numHiddenNodes];
+            for (int j=0; j<numHiddenNodes; j++) 
+            {
+                double dError = 0.0f;
+                for(int k=0; k<numOutputs; k++) 
+                {
+                    dError+=deltaOutput[k]*outputWeights[j][k];
+                }
+                deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
+            }
+
+
+            // Apply change in output weights
+            for (int j=0; j<numOutputs; j++) 
+            {
+                outputLayerBias[j] += deltaOutput[j]*lr;
+                for (int k=0; k<numHiddenNodes; k++) 
+                {
+                    outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
+                }
+            }
+
+
+            // Apply change in hidden weights
+            for (int j=0; j<numHiddenNodes; j++)
+            {
+                hiddenLayerBias[j] += deltaHidden[j]*lr;
+                for(int k=0; k<numInputs; k++)
+                {
+                    hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
+                }
+            }
+
         }
-        hiddenLayer[j] = sigmoid(activation);
     }
-
-    // Compute output layer activation
-    for (int j=0; j<numOutputs; j++) 
-    {
-        double activation=outputLayerBias[j];
-        for (int k=0; k<numHiddenNodes; k++) 
-        {
-            activation+=hiddenLayer[k]*outputWeights[k][j];
-        }
-        outputLayer[j] = sigmoid(activation);
-    }
-
-    // Compute change in output weights
-    double deltaOutput[numOutputs];
-    for (int j=0; j<numOutputs; j++) 
-    {
-        double dError = (training_outputs[i][j]-outputLayer[j]);
-        deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
-    }
-
-    // Compute change in hidden weights
-    double deltaHidden[numHiddenNodes];
-    for (int j=0; j<numHiddenNodes; j++) 
-    {
-        double dError = 0.0f;
-        for(int k=0; k<numOutputs; k++) 
-        {
-            dError+=deltaOutput[k]*outputWeights[j][k];
-        }
-        deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
-    }
-
-
-    // Apply change in output weights
-    for (int j=0; j<numOutputs; j++) 
-    {
-        outputLayerBias[j] += deltaOutput[j]*lr;
-        for (int k=0; k<numHiddenNodes; k++) 
-        {
-            outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
-        }
-    }
-  }
-}
-
-    // Apply change in hidden weights
-    for (int j=0; j<numHiddenNodes; j++)
-    {
-        hiddenLayerBias[j] += deltaHidden[j]*lr;
-        for(int k=0; k<numInputs; k++)
-        {
-            hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
-        }
-    }
-
 
     return 0;
 }
