@@ -1,4 +1,5 @@
 #include "activation.h"
+#include <math.h>
 
 // Activation functions and derivatives
 
