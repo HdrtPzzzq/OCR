@@ -116,6 +116,8 @@ int main()
         for (int x=0; x<numTrainingSets; x++) 
         {
             int i = trainingSetOrder[x];
+            
+            double Error = 0.0;
 
             // Compute hidden layer activation
             for (int j=0; j<numHiddenNodes; j++) 
@@ -159,14 +161,16 @@ int main()
                 deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
             }
 
-            //double Error += 0.5*()
+            double targetout = training_outputs[i][0];
+            double realout = outputLayer[0];
+            Error = 0.5*(targetout*realout)*(targetout*realout);
 
 
             // Apply change in output weights
-            for (int j=0; j<numOutputs; j++) 
+            for (int j=0; j<numOutputs; j++)
             {
                 outputLayerBias[j] += deltaOutput[j]*lr;
-                for (int k=0; k<numHiddenNodes; k++) 
+                for (int k=0; k<numHiddenNodes; k++)
                 {
                     outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
                 }
