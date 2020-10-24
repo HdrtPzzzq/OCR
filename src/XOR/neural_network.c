@@ -146,7 +146,6 @@ int main()
                 double dError = (training_outputs[i][j]-outputLayer[j]);
                 deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
             }
-            Error = ;
 
             // Compute change in hidden weights
             double deltaHidden[numHiddenNodes];
@@ -159,6 +158,8 @@ int main()
                 }
                 deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
             }
+
+            //double Error += 0.5*()
 
 
             // Apply change in output weights
