@@ -101,7 +101,7 @@ int main()
 {
 
     long Maxepoch = 3000;
-    double lr = 0.1;//learning rate    
+    double lr = 0.5;//learning rate    
     double Error = 0.0;//print each 100 epoch
     for (long epoch=0; epoch < Maxepoch; epoch++)
     {
@@ -112,12 +112,13 @@ int main()
         int trainingSetOrder[] = {0,1,2,3};
         RandArray(trainingSetOrder, numTrainingSets);
 
+
+        Error = 0;
+
         // For each epoch we use each element of the training set (4 for XOR)
         for (int x=0; x<numTrainingSets; x++) 
         {
             int i = trainingSetOrder[x];
-            
-            double Error = 0.0;
 
             // Compute hidden layer activation
             for (int j=0; j<numHiddenNodes; j++) 
@@ -191,9 +192,9 @@ int main()
         }
 
         if( epoch%100 == 0 ) fprintf(stdout, "\nEpoch %-5lu :   Error = %f", epoch, Error) ;
-        //if( Error < 0.0004 ) break ;  /* stop learning when 'near enough' */
+        if( Error < 0.0004 ) break ;  /* stop learning when 'near enough' */
     }
-
+    printf("\n");
     return 0;
 }
 
