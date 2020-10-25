@@ -10,11 +10,11 @@
 
 int main()
 {
-    char *path = "images/text_with_color.bmp";
+    char *path = "images/no_preprocess.bmp";
     SDL_Surface *image = loadBMP(path);
     grey_level(image);
     //filter(image);
     binarization(image, 128);
-    segmentation_y(image);
+    //segmentation_y(image);
     displayBMP(image);
 }
