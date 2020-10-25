@@ -4,6 +4,5 @@
 #include <SDL/SDL.h>
 
 SDL_Surface *loadBMP(char *path);
-int displayBMP();
 
 #endif
