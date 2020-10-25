@@ -165,7 +165,7 @@ int main()
             double targetout = training_outputs[i][0];
             double realout = outputLayer[0];
 
-            Error += 0.5*(targetout*realout)*(targetout*realout);
+            Error += 0.5*(targetout-realout)*(targetout-realout);
 
 
             // Apply change in output weights
