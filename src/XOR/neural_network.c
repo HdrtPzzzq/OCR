@@ -93,14 +93,16 @@ double training_outputs[numTrainingSets][numOutputs] = { {0.0f},
     {1.0f},
     {0.0f} };
 
+double trained_outputs[numTrainingSets];
+
 
 // MAIN TRAINING LOOP
 
 // Iterate through the entire training for a number of epochs
-void TrainingNetwork()
+int main()
 {
-
-    long Maxepoch = 3000;
+    int i,j,k,t,x;
+    long Maxepoch = 2000;
     double lr = 0.5;//learning rate    
     double Error = 0.0;//print each 100 epoch
     for (long epoch=0; epoch < Maxepoch; epoch++)
@@ -116,15 +118,15 @@ void TrainingNetwork()
         Error = 0;
 
         // For each epoch we use each element of the training set (4 for XOR)
-        for (int x=0; x<numTrainingSets; x++) 
+        for (x=0; x<numTrainingSets; x++) 
         {
-            int i = trainingSetOrder[x];
+            i = trainingSetOrder[x];
 
             // Compute hidden layer activation
-            for (int j=0; j<numHiddenNodes; j++) 
+            for (j=0; j<numHiddenNodes; j++) 
             {
                 double activation=hiddenLayerBias[j];
-                for (int k=0; k<numInputs; k++) 
+                for (k=0; k<numInputs; k++) 
                 {
                     activation+=training_inputs[i][k]*hiddenWeights[k][j];
                 }
@@ -132,19 +134,22 @@ void TrainingNetwork()
             }
 
             // Compute output layer activation
-            for (int j=0; j<numOutputs; j++) 
+            for (j=0; j<numOutputs; j++) 
             {
                 double activation=outputLayerBias[j];
-                for (int k=0; k<numHiddenNodes; k++) 
+                for (k=0; k<numHiddenNodes; k++) 
                 {
                     activation+=hiddenLayer[k]*outputWeights[k][j];
                 }
                 outputLayer[j] = sigmoid(activation);
+
             }
+
+            trained_outputs[x] = outputLayer[0]; //get value for each case to print
 
             // Compute change in output weights
             double deltaOutput[numOutputs];
-            for (int j=0; j<numOutputs; j++) 
+            for (j=0; j<numOutputs; j++) 
             {
                 double dError = (training_outputs[i][j]-outputLayer[j]);
                 deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
@@ -152,10 +157,10 @@ void TrainingNetwork()
 
             // Compute change in hidden weights
             double deltaHidden[numHiddenNodes];
-            for (int j=0; j<numHiddenNodes; j++) 
+            for (j=0; j<numHiddenNodes; j++) 
             {
                 double dError = 0.0f;
-                for(int k=0; k<numOutputs; k++) 
+                for(k=0; k<numOutputs; k++) 
                 {
                     dError+=deltaOutput[k]*outputWeights[j][k];
                 }
@@ -169,10 +174,10 @@ void TrainingNetwork()
 
 
             // Apply change in output weights
-            for (int j=0; j<numOutputs; j++)
+            for (j=0; j<numOutputs; j++)
             {
                 outputLayerBias[j] += deltaOutput[j]*lr;
-                for (int k=0; k<numHiddenNodes; k++)
+                for (k=0; k<numHiddenNodes; k++)
                 {
                     outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
                 }
@@ -180,10 +185,10 @@ void TrainingNetwork()
 
 
             // Apply change in hidden weights
-            for (int j=0; j<numHiddenNodes; j++)
+            for (j=0; j<numHiddenNodes; j++)
             {
                 hiddenLayerBias[j] += deltaHidden[j]*lr;
-                for(int k=0; k<numInputs; k++)
+                for(k=0; k<numInputs; k++)
                 {
                     hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
                 }
@@ -194,8 +199,36 @@ void TrainingNetwork()
         if( epoch%100 == 0 ) fprintf(stdout, "\nEpoch %-5lu :   Error = %f", epoch, Error) ;
         if( Error < 0.0004 ) break ;  /* stop learning when 'near enough' */
     }
+
+    printf("\n");
+    printf("Pat\t");
+    for(i = 0; i<numInputs; i++)
+    {
+        printf("Input%-4d\t", i+1);
+    }
+
+    for(i = 0; i<numOutputs; i++)
+    {
+        printf("Target%-4d\t", i+1);
+        printf("Output%-4d\t", i+1);
+    }
+
+    for(t = 0; t<numTrainingSets; t++)
+    {
+        printf("\n%d\t", t);
+
+        for(i = 0; i<numInputs; i++)
+        {
+            printf("%f\t", training_inputs[t][i]);
+        }
+
+        printf("%f\t%f\t", training_outputs[t][0], trained_outputs[t]);
+
+    }
+
     printf("\n");
 
+    return 0;
 }
 
 
