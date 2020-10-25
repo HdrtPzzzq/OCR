@@ -97,7 +97,7 @@ double training_outputs[numTrainingSets][numOutputs] = { {0.0f},
 // MAIN TRAINING LOOP
 
 // Iterate through the entire training for a number of epochs
-int main()
+void TrainingNetwork()
 {
 
     long Maxepoch = 3000;
@@ -195,7 +195,7 @@ int main()
         if( Error < 0.0004 ) break ;  /* stop learning when 'near enough' */
     }
     printf("\n");
-    return 0;
+
 }
 
 
