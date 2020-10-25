@@ -57,21 +57,18 @@ size_t RandomSizet(size_t a)
 
 
 //Shuffle an int array
-void RandArray(int arr[], int l)
+void RandArray(int arr[], size_t l)
 {
-    size_t nshuffle = l*3;  //shuffles array length*3 times
-    size_t rand1;
-    size_t rand2;
-    int val;
-
-    size_t i;
-    for(i = 0; i < nshuffle; i++)
+    if(l > 1)
     {
-        rand1 = RandomSizet(l);
-        rand2 = RandomSizet(l);
-        val = arr[rand1];
-        arr[rand1] = arr[rand2];
-        arr[rand2] = val;
+        size_t i;
+        for(i = 0; i < l - 1; i++)
+        {
+            size_t j = i + rand() / (RAND_MAX / (l - i) + 1);
+            int t = arr[j];
+            arr[j] = arr[i];
+            arr[i] = t;
+        }
     }
 
 }
@@ -102,12 +99,13 @@ double trained_outputs[numTrainingSets];
 int main()
 {
     int i,j,k,t,x;
-    long Maxepoch = 2000;
-    double lr = 0.5;//learning rate    
+    long epoch;
+    long Maxepoch = 10000;
+    double lr = 0.1;//learning rate    
     double Error = 0.0;//print each 100 epoch
-    for (long epoch=0; epoch < Maxepoch; epoch++)
-    {
 
+    for (epoch=0; epoch < Maxepoch; epoch++)
+    {
 
         // As per SGD(stochastic gradient descent),
         // we have to randomize the order of the training set
@@ -125,34 +123,35 @@ int main()
             // Compute hidden layer activation
             for (j=0; j<numHiddenNodes; j++) 
             {
-                double activation=hiddenLayerBias[j];
+                double activationval = hiddenLayerBias[j];
                 for (k=0; k<numInputs; k++) 
                 {
-                    activation+=training_inputs[i][k]*hiddenWeights[k][j];
+                    activationval += training_inputs[i][k]*hiddenWeights[k][j];
                 }
-                hiddenLayer[j] = sigmoid(activation);
+                hiddenLayer[j] = activation(activationval);
             }
 
             // Compute output layer activation
             for (j=0; j<numOutputs; j++) 
             {
-                double activation=outputLayerBias[j];
+                double activationval = outputLayerBias[j];
                 for (k=0; k<numHiddenNodes; k++) 
                 {
-                    activation+=hiddenLayer[k]*outputWeights[k][j];
+                    activationval+=hiddenLayer[k]*outputWeights[k][j];
                 }
-                outputLayer[j] = sigmoid(activation);
+                outputLayer[j] = activation(activationval);
 
             }
 
-            trained_outputs[x] = outputLayer[0]; //get value for each case to print
+            //get value for each case to print
+            trained_outputs[x] = outputLayer[0];
 
             // Compute change in output weights
             double deltaOutput[numOutputs];
             for (j=0; j<numOutputs; j++) 
             {
                 double dError = (training_outputs[i][j]-outputLayer[j]);
-                deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
+                deltaOutput[j] = dError*dactivation(outputLayer[j]);
             }
 
             // Compute change in hidden weights
@@ -164,7 +163,7 @@ int main()
                 {
                     dError+=deltaOutput[k]*outputWeights[j][k];
                 }
-                deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
+                deltaHidden[j] = dError*dactivation(hiddenLayer[j]);
             }
 
             double targetout = training_outputs[i][0];
@@ -172,6 +171,8 @@ int main()
 
             Error += 0.5*(targetout-realout)*(targetout-realout);
 
+
+            //BACKPROPAGATION
 
             // Apply change in output weights
             for (j=0; j<numOutputs; j++)
@@ -197,7 +198,7 @@ int main()
         }
 
         if( epoch%100 == 0 ) fprintf(stdout, "\nEpoch %-5lu :   Error = %f", epoch, Error) ;
-        if( Error < 0.0004 ) break ;  /* stop learning when 'near enough' */
+        if( Error < 0.0004 ) break ;  // stop learning when 'near enough' 
     }
 
     printf("\n");
@@ -227,7 +228,12 @@ int main()
     }
 
     printf("\n");
-
+    
+    int trainingSetOrder[] = {1,2,3,4};
+    RandArray(trainingSetOrder,numTrainingSets);
+    for(i = 0; i<numTrainingSets; i++)
+        printf("\n%d", trainingSetOrder[i]);
+                
     return 0;
 }
 
