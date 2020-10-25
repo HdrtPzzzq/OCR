@@ -101,11 +101,11 @@ int main()
 {
 
     long Maxepoch = 3000;
-    double lr = 0.1;                //learning rate
+    double lr = 0.1;//learning rate    
+    double Error = 0.0;//print each 100 epoch
     for (long epoch=0; epoch < Maxepoch; epoch++)
     {
 
-        double Error;//print each 100 epoch
 
         // As per SGD(stochastic gradient descent),
         // we have to randomize the order of the training set
@@ -163,7 +163,8 @@ int main()
 
             double targetout = training_outputs[i][0];
             double realout = outputLayer[0];
-            Error = 0.5*(targetout*realout)*(targetout*realout);
+
+            Error += 0.5*(targetout*realout)*(targetout*realout);
 
 
             // Apply change in output weights
