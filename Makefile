@@ -6,33 +6,40 @@ CFLAGS = -Wall -Wextra -Werror -std=c99 -Iinclude $(shell pkg-config --cflags sd
 LDFLAGS =
 LDLIBS = -lm $(shell pkg-config --libs sdl)
 
-OUT = main xor img
+OUT = main xor img seg
 
-SRC = src/main.c
+SRC =
 
 IMG = $(shell find ./src/IMG -name *.c)
+SEG = $(shell find ./src/SEG -name *.c)
 XOR = $(shell find ./src/XOR -name *.c)
 
+OBJ = $(SRC:.c=.o)
+
 OIMG = $(IMG:.c=.o)
+OSEG = $(SEG:.c=.o)
 OXOR = $(XOR:.c=.o)
 
-OBJ = src/main.o $(OXOR) $(OIMG)
-DEP = $(SRC:.c=.d) $(XOR:.c=.d) $(IMG:.c=.d)
+AOBJ = $(OBJ) $(OIMG) $(OSEG) $(OXOR)
+DEP = $(SRC:.c=.d) $(IMG:.c=.d) $(SEG:.c=.d) $(XOR:.c=.d)
 
 .PHONY: all main XOR IMG clean
 all: main
 
-main: $(OBJ)
-	$(CC) -o main $(OBJ) $(LDLIBS) $(LDFLAGS)
-
-XOR: $(OXOR)
-	$(CC) -o xor $(OXOR) $(LDLIBS) $(LDFLAGS)
+main: $(AOBJ)
+	$(CC) -o main $(AOBJ) $(LDLIBS) $(LDFLAGS)
 
 IMG: $(OIMG)
 	$(CC) -o img $(OIMG) $(LDLIBS) $(LDFLAGS)
 
+SEG: $(OSEG)
+	$(CC) -o seg $(OSEG) $(LDLIBS) $(LDFLAGS)
+
+XOR: $(OXOR)
+	$(CC) -o xor $(OXOR) $(LDLIBS) $(LDFLAGS)
+
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(AOBJ)
 	$(RM) $(DEP)
 	$(RM) $(OUT)
 
