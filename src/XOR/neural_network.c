@@ -2,19 +2,17 @@
 #include <stdlib.h>
 #include "activation.h"
 
+
+//NUMBER OF NEURONS
+
 #define numInputs 2
 #define numHiddenNodes 2
 #define numOutputs 1
 
+//NUMBER OF DIFFERENT CASES
 #define numTrainingSets 4
 
 //======INIT PART======//
-
-//NUMBER OF NEURONS
-//in XOR we have 2 inputs, 2 neurons in hidden layer, and 1 output
-//static const int numInputs = 2;         //2 inputs nodes
-//static const int numHiddenNodes = 2;    //2 neurones
-//static const int numOutputs = 1;        //1 output node
 
 //LAYERS
 //(1 hidden of 2 neurons, and 1 output layer of 1 node)
@@ -74,10 +72,39 @@ void RandArray(int arr[], size_t l)
 }
 
 
+//INIT WEIGHTS
+
+double create_weight()
+{
+    return ((double)rand())/((double)RAND_MAX);
+}
+
+void hiddenw_init(double arr[numInputs][numHiddenNodes])
+{
+    int i, j;
+    for(i = 0; i < numInputs; i++)
+    {
+        for(j = 0; j < numHiddenNodes; j++)
+        {
+            arr[i][j] = create_weight();
+        }
+    }
+}
+
+void outputw_init(double arr[numHiddenNodes][numOutputs])
+{
+    int i, j;
+    for(i = 0; i < numHiddenNodes; i++)
+    {
+        for(j = 0; j < numOutputs; j++)
+        {
+            arr[i][j] = create_weight();
+        }
+    }
+}
+
 //=======TRAINING SET======//
 
-
-//static const int numTrainingSets = 4;   //(0,0),(0,1),(1,0),(1,1) for XOR
 
 //in each "tuple", the first element is for the first input node
 //and the second element for the second input
@@ -86,9 +113,7 @@ double training_inputs[numTrainingSets][numInputs] = {{0.0f,0.0f},{1.0f,0.0f},
 
 //1 output, 4 training sets
 double training_outputs[numTrainingSets][numOutputs] = { {0.0f},
-    {1.0f},
-    {1.0f},
-    {0.0f} };
+    {1.0f},{1.0f},{0.0f} };
 
 double trained_outputs[numTrainingSets];
 
@@ -100,9 +125,13 @@ int main()
 {
     int i,j,k,t,x;
     long epoch;
-    long Maxepoch = 10000;
-    double lr = 0.1;//learning rate    
+    long Maxepoch = 1000;
+    double lr = 1;//learning rate    
     double Error = 0.0;//print each 100 epoch
+
+    hiddenw_init(hiddenWeights);
+    outputw_init(outputWeights);
+
 
     for (epoch=0; epoch < Maxepoch; epoch++)
     {
@@ -120,7 +149,7 @@ int main()
         {
             i = trainingSetOrder[x];
 
-            // Compute hidden layer activation
+            // Compute hidden layer
             for (j=0; j<numHiddenNodes; j++) 
             {
                 double activationval = hiddenLayerBias[j];
@@ -131,7 +160,7 @@ int main()
                 hiddenLayer[j] = activation(activationval);
             }
 
-            // Compute output layer activation
+            // Compute output layer
             for (j=0; j<numOutputs; j++) 
             {
                 double activationval = outputLayerBias[j];
@@ -228,12 +257,7 @@ int main()
     }
 
     printf("\n");
-    
-    int trainingSetOrder[] = {1,2,3,4};
-    RandArray(trainingSetOrder,numTrainingSets);
-    for(i = 0; i<numTrainingSets; i++)
-        printf("\n%d", trainingSetOrder[i]);
-                
+
     return 0;
 }
 
