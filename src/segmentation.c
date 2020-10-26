@@ -1,6 +1,11 @@
 #include"segmentation.h"
 #include"pixelBMP.h"
-void segmentation_ligne(SDL_Surface *image, SDL_PixelFormat *fmt)
+
+
+
+
+
+/*void segmentation_ligne(SDL_Surface *image, SDL_PixelFormat *fmt)
 {
 
     int i,j;
@@ -118,4 +123,4 @@ end_line,SDL_PixelFormat *fmt)
             }
         }
     }
-}
+}*/
