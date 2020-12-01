@@ -2,7 +2,7 @@
 
 CC = gcc
 CPPFLAGS = -MMD
-CFLAGS = -Wall -Wextra -Werror -std=c99 -Iinclude $(shell pkg-config --cflags sdl)
+CFLAGS = -Wall -Wextra -Werror -g -O0 -std=c99 -Iinclude $(shell pkg-config --cflags sdl)
 LDFLAGS =
 LDLIBS = -lm $(shell pkg-config --libs sdl)
 
