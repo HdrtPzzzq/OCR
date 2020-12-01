@@ -4,9 +4,9 @@
 #include <SDL/SDL.h>
 #include "pixelBMP.h"
 
-void segmentation_y(SDL_Surface *image);
+SDL_Surface ***segmentation_y(SDL_Surface *image);
 
-void segmentation_x(SDL_Surface *image, int start_y, int end_y);
+SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y);
 
 int is_line_white(SDL_Surface *image, int y);
 
