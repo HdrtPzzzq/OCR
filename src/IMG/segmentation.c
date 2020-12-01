@@ -3,7 +3,7 @@
 
 SDL_Surface ***segmentation_y(SDL_Surface *image)
 {
-  //size_t size = sizeof(int); // Value used for realloc'ing memory.
+  size_t size = sizeof(SDL_Surface*); // Value used for realloc'ing memory.
   SDL_Surface ***lines = NULL; // Array to store surfaces of lines.
   size_t len = 0; // Length of the array.
 
@@ -36,12 +36,12 @@ SDL_Surface ***segmentation_y(SDL_Surface *image)
     }
     if(start && end) // We have a whole line
     {
-      //size *= sizeof(SDL_Surface**);
-      //lines = realloc(lines, size);
+      size += sizeof(SDL_Surface**);
+      lines = realloc(lines, size);
 
       // Call the same function on x.
       SDL_Surface **line = segmentation_x(image, start_y, end_y);
-      //lines[len] = line;
+      lines[len] = line;
       free(*line);
       len ++;
       start = 0; // Start over with a new line.
@@ -53,7 +53,7 @@ SDL_Surface ***segmentation_y(SDL_Surface *image)
 
 SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y)
 {
-  size_t size = sizeof(int); // Value used for realloc'ing memory.
+  size_t size = sizeof(SDL_Surface); // Value used for realloc'ing memory.
   SDL_Surface **characters = NULL; // Array to store surfaces of characters.
   size_t len = 0; // Length of the array.
 
@@ -96,7 +96,7 @@ SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y)
       // Copy a character in the new surface.
       SDL_BlitSurface(image, &srcrect, dst, NULL);
       // Add the surface in an array.
-      size *= sizeof(SDL_Surface*);
+      size += sizeof(SDL_Surface*);
       characters = realloc(characters, size);
       characters[len] = dst;
       len ++;
