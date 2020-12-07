@@ -23,7 +23,7 @@ int main()
         printf("%lf\n",*(layer->weights+i));
     }
     printf("biases: \n");
-    for (size_t i = 0;i<layer->size*layer->input_size;i++)
+    for (size_t i = 0;i<layer->size;i++)
     {
         printf("%lf\n",*(layer->biases+i));
     }
@@ -46,7 +46,7 @@ int main()
         printf("%lf\n",*(layer->weights+i));
     }
     printf("biases: \n");
-    for (size_t i = 0;i<layer->size*layer->input_size;i++)
+    for (size_t i = 0;i<layer->size;i++)
     {
         printf("%lf\n",*(layer->biases+i));
     }
