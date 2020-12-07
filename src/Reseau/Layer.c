@@ -7,7 +7,7 @@
 
 /*typedef struct Layer
 {
-    size_t size; 
+    size_t size;
     size_t input_size;
     double *weights;
     double *biases;
@@ -48,7 +48,7 @@ void Layer_Activation(Layer *This, double training_inputs[])
         for (size_t k=0; k<This->input_size; k++) 
         {
             activationval += training_inputs[k]*This->weights[k*This->input_size + j];
-        }        
+        }
         *(This->activation_values+j) = sigmoid(activationval);
     }
 
