@@ -23,6 +23,6 @@ int main()
     for(epoch=0; epoch < Maxepoch; epoch++)
     {
       Layer_Forward(hiddenlayer,data);
-      Layer_Forward(ouputlayer,hiddenlayer->activation_values);
+      Layer_Forward(outputlayer,hiddenlayer->activation_values);
     }
 }

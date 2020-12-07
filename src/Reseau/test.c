@@ -1,9 +1,11 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<math.h>
+#include <err.h>
 
-#include "Layer.h"
+//#include "Layer.h"
 #include "fonctions.h"
+#include "savevalues.h"
 
 int main()
 {
@@ -61,6 +63,7 @@ int main()
         printf("%lf\n",*(layer->activation_primes_values+i));
     }  
     printf("****************************************************************\n");
+    save_values(layer);
     Layer_Free(layer);
 }
 

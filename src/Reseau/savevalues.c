@@ -1,18 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <maths.h>
+#include <math.h>
 #include <err.h>
 
 #include "Layer.h"
-#include "savevalues.h"
 
-
-void save_values(struct Layer* layer)
+void save_values(Layer* layer)
 {
     FILE* Weights = NULL;
     Weights = fopen("weights", "w");
 
-    if(HiddenWeights == NULL)
+    if(Weights == NULL)
         return errx(1, "Weights file not found");
 
     for(size_t i = 0; i < layer->size * layer->input_size; i++)
@@ -20,7 +18,7 @@ void save_values(struct Layer* layer)
         fprintf(Weights, "%lf\n", *(layer->weights+i));
     }
 
-    fclose Weights;
+    fclose(Weights);
 
     //**********************************************************
 
@@ -35,5 +33,5 @@ void save_values(struct Layer* layer)
         fprintf(Biases, "%lf\n", *(layer->biases+i));
     }
 
-    fclose Biases;
+    fclose(Biases);
 }
