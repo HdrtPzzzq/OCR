@@ -6,17 +6,6 @@
 #include "fonctions.h"
 #include "Layer.h"
 
-/*typedef struct Layer
-{
-    size_t size;
-    size_t input_size;
-    double *weights;
-    double *biases;
-    double *activation_values;
-    double *activation_primes_values;
-
-}Layer;*/
-
 /******************************************************************************/
 
 void Layer_Init(Layer *This, size_t size, size_t input_size)
@@ -35,7 +24,7 @@ void Layer_Init(Layer *This, size_t size, size_t input_size)
 Layer* New_Layer(size_t size, size_t input_size)
 {
        Layer *This = malloc(sizeof(Layer));
-       if(!This) return NULL;
+       if(!This){return NULL;}
        Layer_Init(This, size, input_size);
        return This;
 }
@@ -102,7 +91,7 @@ void Layer_Update_All(Layer *This, double gradient_weights[], double gradient_bi
 /******************************************************************************/
  
 void Layer_Clear(Layer *This)
-{
+{   
     free(This->weights);
     free(This->biases);
     free(This->activation_values);

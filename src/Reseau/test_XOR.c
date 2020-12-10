@@ -16,6 +16,8 @@ int main()
     data[1] = 0;
     data[2] = 1;
     data[3] = 0;
+    double results[2];
+    results[0] =
 
     Layer *hiddenlayer = New_Layer(2,2);
     Layer *outputlayer = New_Layer(1,2);
@@ -24,5 +26,6 @@ int main()
     {
       Layer_Forward(hiddenlayer,data);
       Layer_Forward(outputlayer,hiddenlayer->activation_values);
+    
     }
 }
