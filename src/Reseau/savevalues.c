@@ -5,10 +5,10 @@
 
 #include "Layer.h"
 
-void save_values(Layer* layer)
+void save_values(Layer* layer, char[] strw , char[] strb )
 {
     FILE* Weights = NULL;
-    Weights = fopen("weights", "w");
+    Weights = fopen(strw, "w");
 
     if(Weights == NULL)
         return errx(1, "Weights file not found");
@@ -23,7 +23,7 @@ void save_values(Layer* layer)
     //**********************************************************
 
     FILE* Biases = NULL;
-    Biases = fopen("biases", "w");
+    Biases = fopen(strb, "w");
 
     if(Biases == NULL)
         return errx(1, "Biases file not found");
