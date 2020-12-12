@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<math.h>
 
-
+#include "fonctions.h"
 #include "Network.h"
 
 /******************************************************************************/
@@ -106,15 +106,54 @@ void Network_Backprop(Network *This, double input_data[],double expected_output)
     target[(size_t)(expected_output)] = 1;
     double *delta[62];
     double **deltas[This->number_l];
-    for(size_t x = 0; x < 62; x++){*delta[x] = This->layers[This->number_l - 1]->activation_values[x] - target[x];}
-    deltas[0] = delta;
+    for(size_t x = 0; x < 62; x++)
+    {
+        *delta[x] = This->layers[This->number_l - 1]->activation_values[x] - target[x];
+    }
+    size_t k = 0;
+    deltas[k] = delta;
+    k++;
+
     for(size_t l = This->number_l - 2; l >= 0; l--)
     {
         Layer *layer = This->layers[l];
         Layer *next_layer = This->layers[l + 1];
-        double *delta_p[layer->input_size * layer->size];
+        size_t len_delta = sizeof(delta)/sizeof(delta[0]);
+
+        double transpose_weights[layer->size * layer->input_size];
+        for(size_t x = 0 ; x < layer->size * layer->input_size; x++ )
+        {
+            transpose_weights[x] = layer->weights[x];
+        }
         
+        double *delta_p[layer->input_size * layer->size];
+        transpose_mat(next_layer->weights,layer->size,layer->input_size,transpose_weights);
+        mult_matrix(transpose_weights,layer->input_size,layer->size,*delta,len_delta,*delta_p);
+        for(size_t i = 0 ; i< layer->size * layer->input_size; i++)
+        {
+            *delta_p[i] = *delta_p[i] * layer->activation_primes_values[i];
+        }
+        
+        deltas[k] = delta_p;
+        k++;
+       
     }
+    
+    for (size_t t = 0; t < k/2; t++)
+    {
+        double *sto = delta[t];
+        delta[t] = delta[k-1-t];
+        delta[k-t-1] = sto;
+    }
+
+    for(size_t l = 0; l < This->number_l; l++)
+    {
+        for(size_t b = 0; b < This->layers[l]->size* This->layers[l]->input_size; b++)
+        {
+            This->layers[l]->gradient_weights[b] = This->layers[l]->activation_values[b] * *deltas[l][b];
+        }
+    }
+
 }
 /*******************************************************************************/
 
