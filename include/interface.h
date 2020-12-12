@@ -1,0 +1,11 @@
+#include <gtk/gtk.h>
+#include <SDL/SDL.h>
+#include <stdio.h>
+#include <err.h>
+#include "binarization.h"
+#include "displayBMP.h"
+#include "loadBMP.h"
+#include "grey_levem.h"
+#include "noise_reduction.h"
+#include "pixelBMP.h"
+#include "segmentation.h"
