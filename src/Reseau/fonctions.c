@@ -35,4 +35,42 @@ void random_biases(double *bias, size_t size)
 }
 /******************************************************************************/
 
+double* transpose_mat(double *M, size_t r, size_t c)
+{
+    double newM[r*c];
+
+    for(size_t i = 0; i<r; i++)
+    {
+        for(size_t j = 0; j<c; j++)
+        {
+            newM[j*c + i] = M[i*r+j];
+        }
+    }
+
+    return newM
+}
+
+
+
+/******************************************************************************/
+double* mult_matrix(double *M1, size_t r1, size_t c1, double *M2, size_t r2, size_t c2)
+{
+    double newM[r1*c2];
+
+    for(size_t i = 0; i<c2; i++)       //newM range path (vertical)
+    {
+        for(size_t j=0; j<r1; j++)     //new M columns path (horizontal)
+        {
+            double sum = 0;
+            for(k = 0; k < c1; k++)
+            {
+                sum += M1[0+k*(i+1)]*M2[k*(i+1)+j];
+            }
+
+            newM[i*c2+j*r1] = sum;
+        }
+    }
+
+    return newM;
+}
 
