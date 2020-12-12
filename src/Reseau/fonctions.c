@@ -52,17 +52,17 @@ void transpose_mat(double *M, size_t r, size_t c,double *dst)
 /******************************************************************************/
 void mult_matrix(double *M1, size_t r1, size_t c1, double *M2, size_t c2, double *dst)
 {
-    for(size_t i = 0; i<c2; i++)       //newM range path (vertical)
+    for(size_t i = 0; i<r1; i++)       //newM rows path (vertical)
     {
-        for(size_t j=0; j<r1; j++)     //new M columns path (horizontal)
+        for(size_t j=0; j<c2; j++)     //new M columns path (horizontal)
         {
             double sum = 0;
             for(size_t k = 0; k < c1; k++)
             {
-                sum += M1[0+k*(i+1)]*M2[k*(i+1)+j];
+                sum += M1[i*c1 + k] * M2[k*c2+j];
             }
 
-            dst[i*c2+j*r1] = sum;
+            dst[i*r1+j] = sum;
         }
     }
 }
