@@ -107,12 +107,13 @@ void Network_Backprop(Network *This, double input_data[],double expected_output)
     double *delta[62];
     double **deltas[This->number_l];
     for(size_t x = 0; x < 62; x++){*delta[x] = This->layers[This->number_l - 1]->activation_values[x] - target[x];}
-    deltas[0] = delta
+    deltas[0] = delta;
     for(size_t l = This->number_l - 2; l >= 0; l--)
     {
         Layer *layer = This->layers[l];
         Layer *next_layer = This->layers[l + 1];
-
+        double *delta_p[layer->input_size * layer->size];
+        
     }
 }
 /*******************************************************************************/
