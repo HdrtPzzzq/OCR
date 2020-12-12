@@ -16,8 +16,11 @@ void Layer_Init(Layer *This, size_t size, size_t input_size)
     random_weights(This->weights, This->size, This->input_size);
     This->biases = malloc(size*sizeof(double));
     random_biases(This->biases,This->size);
+    This->aggregation = malloc(size*sizeof(double));
     This->activation_values = malloc(size*sizeof(double));
     This->activation_primes_values = malloc(size*sizeof(double));
+    This->gradient_weights = malloc(size*input_size*sizeof(double));
+    This->gradient_biases = malloc(size*sizeof(double));
 }
 /******************************************************************************/
 
@@ -30,7 +33,7 @@ Layer* New_Layer(size_t size, size_t input_size)
 }
 /******************************************************************************/
 
-void Layer_Activation(Layer *This, double training_inputs[])
+void Layer_Aggregation(Layer *This, double training_inputs[])
 { 
     for (size_t j=0; j<This->size; j++) 
     {
@@ -39,7 +42,17 @@ void Layer_Activation(Layer *This, double training_inputs[])
         {
             activationval += training_inputs[k]*This->weights[k*This->input_size + j];
         }
-        *(This->activation_values+j) = sigmoid(activationval);
+        *(This->aggregation+j) = activationval;
+    }
+
+}
+/******************************************************************************/
+
+void Layer_Activation(Layer *This)
+{ 
+    for (size_t j=0; j<This->size; j++) 
+    {    
+        *(This->activation_values+j) = sigmoid(This->aggregation[j]);
     }
 
 }
@@ -49,14 +62,15 @@ void Layer_Activation_prime(Layer *This)
 {
     for (size_t j = 0; j < This->size; j++)
     {
-        This->activation_primes_values[j] = sigmoid_prime(This->activation_values[j]);
+        This->activation_primes_values[j] = sigmoid_prime(This->aggregation[j]);
     }
 }
 /******************************************************************************/
 
 void Layer_Forward(Layer *This, double data[])
-{ 
-    Layer_Activation(This, data);
+{
+    Layer_Aggregation(This, data);
+    Layer_Activation(This);
     Layer_Activation_prime(This);
 }
 /******************************************************************************/

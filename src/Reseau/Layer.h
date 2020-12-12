@@ -10,8 +10,11 @@ typedef struct Layer
     size_t input_size;
     double *weights;
     double *biases;
+    double *aggregation;
     double *activation_values;
     double *activation_primes_values;
+    double *gradient_weights;
+    double *gradient_biases;
 
 }Layer;
 
@@ -19,7 +22,9 @@ void Layer_Init(Layer *This, size_t size, size_t input_size);
 
 Layer* New_Layer(size_t size, size_t input_size);
 
-void Layer_Activation(Layer *This, double training_inputs[]);
+void Layer_Aggregation(Layer *This, double training_inputs[]);
+
+void Layer_Activation(Layer *This);
 
 void Layer_Activation_prime(Layer *This);
 
