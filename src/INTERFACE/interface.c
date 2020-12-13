@@ -1,4 +1,4 @@
-#include "interface.h"
+//#include "interface.h"
 
 // Structure of the graphical user interface.
 
@@ -34,17 +34,8 @@ typedef struct OCR
 {
     State state;        //State of the OCR
     UserInterface ui;   //User Interace
+    *char image         //Image for the OCR
 }OCR;
-
-// Sets the "reset" state.
-void set_reset(OCR* ocr)
-{
-  ocr->state = RESET;
-  gtk_widget_set_sensitive(GTK_WIDGET(game->ui.reset_button), FALSE);
-
-  // - Set the state field to PLAY.
-  // - Disable the stop button.
-}
 
 
 // Event handler for the "draw" signal of the drawing area.
@@ -81,6 +72,21 @@ void on_stop(GtkButton *button, gpointer user_data)
 {
   set_stop(user_data);
 }
+
+void on_ready(GtkButton *button, gpointer user_data)
+{
+  // Gets the `Game` structure.
+  Game *game = user_data;
+
+  // Sets the next state according to the current state.
+  switch (game->state)
+  {
+    case STOP: set_play(game); break;
+    case PLAY: set_pause(game); break;
+    case PAUSE: set_play(game); break;
+  };
+}
+
 
 int main (int argc, char *argv[])
 {
