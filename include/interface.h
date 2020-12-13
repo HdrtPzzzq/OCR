@@ -5,7 +5,14 @@
 #include "binarization.h"
 #include "displayBMP.h"
 #include "loadBMP.h"
-#include "grey_levem.h"
-#include "noise_reduction.h"
+#include "grey_level.h"
 #include "pixelBMP.h"
 #include "segmentation.h"
+
+struct OCR;
+enum State;
+struct UserInterface;
+gboolean on_draw(cairo_t *cr, gpointer user_data);
+void set_stop(struct OCR *ocr);
+void on_stop(gpointer user_data);
+int main (int argc, char *argv[]);
