@@ -6,8 +6,8 @@
 #include "pixelBMP.h"
 #include "grey_level.h"
 #include "binarization.h"
-#include "img_filter.h"
 #include "segmentation.h"
+#include "noise_reduction.h"
 
 int main()
 {
@@ -25,7 +25,6 @@ int main()
   grey_level(image);
   displayBMP(image);
 
-  //filter(image);
   // |==BINARIZATION==|
   image = loadBMP(colored);
   grey_level(image);

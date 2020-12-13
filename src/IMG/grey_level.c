@@ -1,5 +1,4 @@
 #include"grey_level.h"
-#include"pixelBMP.h"
 unsigned int grey_level_pixel(unsigned int pixel, SDL_PixelFormat *fmt )
 {
     //We create a color where we gonna stock the g value, b value and r value of
