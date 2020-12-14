@@ -1,4 +1,5 @@
 #include "segmentation.h"
+#include "displayBMP.h"
 #include <stdlib.h>
 
 SDL_Surface ***segmentation_y(SDL_Surface *image)
@@ -42,7 +43,6 @@ SDL_Surface ***segmentation_y(SDL_Surface *image)
       // Call the same function on x.
       SDL_Surface **line = segmentation_x(image, start_y, end_y);
       lines[len] = line;
-      free(*line);
       len ++;
       start = 0; // Start over with a new line.
       end = 0;
@@ -56,7 +56,6 @@ SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y)
   size_t size = sizeof(SDL_Surface); // Value used for realloc'ing memory.
   SDL_Surface **characters = NULL; // Array to store surfaces of characters.
   size_t len = 0; // Length of the array.
-
   // Temporary variables to get x coordinates of characters.
   int start_x = 0;
   int end_x = 0;
@@ -87,7 +86,7 @@ SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y)
     if(start && end)
     {
       // Initialize new surface.
-      SDL_Surface * dst = SDL_CreateRGBSurface(0, end_x - start_x, end_y - start_y, 0, 0, 0, 0, 0);
+      SDL_Surface *dst = SDL_CreateRGBSurface(0, end_x - start_x, end_y - start_y, 32, image->format->Rmask, image->format->Gmask, image->format->Bmask, image->format->Amask);
       SDL_Rect srcrect;
       srcrect.x = start_x;
       srcrect.y = start_y;

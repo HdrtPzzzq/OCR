@@ -1,6 +1,6 @@
 #include "displayBMP.h"
 
-SDL_Surface *displayBMP(SDL_Surface *image)
+void displayBMP(SDL_Surface *image)
 {
     // Initialize screen and window
     SDL_Surface *screen = NULL;
@@ -22,9 +22,8 @@ SDL_Surface *displayBMP(SDL_Surface *image)
 
     // Free ressources generated for the image
     SDL_FreeSurface(image);
+    SDL_FreeSurface(screen);
     SDL_Quit();
-
-    return screen;
 }
 
 void update_surface(SDL_Surface* screen, SDL_Surface* image)
