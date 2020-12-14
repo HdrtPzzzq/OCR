@@ -5,7 +5,7 @@
 
 #include "Layer.h"
 
-void save_values(Layer* layer, char[] strw , char[] strb )
+void save_values(Layer* layer, char strw[20], char strb[20])
 {
     FILE* Weights = NULL;
     Weights = fopen(strw, "w");

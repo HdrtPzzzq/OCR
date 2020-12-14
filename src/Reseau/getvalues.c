@@ -2,16 +2,17 @@
 #include <stdlib.h>
 #include <math.h>
 #include <err.h>
+#include <string.h>
 
 #include "Layer.h"
 
-void get_values(Layer* layer)
+void get_values(Layer* layer, char strw[20], char strb[20])
 {
     //create a new neural network 
 
 
     FILE* Weights = NULL;
-    Weights = fopen("weights", "r");
+    Weights = fopen(strw, "r");
 
     if(Weights == NULL)
         return errx(1, "Weights file not found");
@@ -25,7 +26,7 @@ void get_values(Layer* layer)
     {
         fgets(val, size, Weights);
         strtok(val, "\n");
-        layer->weights = atof(val);
+        *(layer->weights+i) = atof(val);
     }
 
     fclose(Weights);
@@ -33,7 +34,7 @@ void get_values(Layer* layer)
     //**********************************************************
 
     FILE* Biases = NULL;
-    Biases = fopen("biases", "r");
+    Biases = fopen(strb, "r");
 
     if(Biases == NULL)
         return errx(1, "Biases file not found");
@@ -42,7 +43,7 @@ void get_values(Layer* layer)
     { 
         fgets(val, size, Biases);
         strtok(val, "\n");
-        layer->biases = atof(val);
+        *(layer->biases+i) = atof(val);
     }
 
     fclose(Biases);

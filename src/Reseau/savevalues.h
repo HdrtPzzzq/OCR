@@ -7,6 +7,6 @@
 
 #include "Layer.h"
 
-void save_values(Layer* layer);
+void save_values(Layer* layer, char strw[], char strb[]);
 
 #endif

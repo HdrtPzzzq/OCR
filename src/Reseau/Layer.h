@@ -1,4 +1,5 @@
 #ifndef LAYER_H
+#define LAYER_H
 
 #include<stdlib.h>
 #include<stdio.h>
