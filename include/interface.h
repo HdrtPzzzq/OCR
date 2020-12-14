@@ -12,7 +12,9 @@
 struct OCR;
 enum State;
 struct UserInterface;
-gboolean on_draw(cairo_t *cr, gpointer user_data);
-void set_stop(struct OCR *ocr);
+gboolean on_draw(cairo_t *cr,gpointer user_data);
+void set_doing(gpointer user_data);
+void on_doing(gpointer user_data);
+void set_stop(gpointer user_data);
 void on_stop(gpointer user_data);
 int main (int argc, char *argv[]);
