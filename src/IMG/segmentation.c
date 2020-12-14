@@ -2,12 +2,13 @@
 #include "displayBMP.h"
 #include <stdlib.h>
 
-SDL_Surface ***segmentation_y(SDL_Surface *image)
+SDL_Matrix segmentation_y(SDL_Surface *image)
 {
   size_t size = sizeof(SDL_Surface*); // Value used for realloc'ing memory.
   SDL_Surface ***lines = NULL; // Array to store surfaces of lines.
-  size_t len = 0; // Length of the array.
-
+  size_t nb_arr = 0; // Length of the array.
+  size_t *len_arr = NULL;
+  size_t size_len = sizeof(size_t);
   // Temporary variables to get y coordinates of characters.
   int start_y = 0;
   int end_y = 0;
@@ -38,24 +39,29 @@ SDL_Surface ***segmentation_y(SDL_Surface *image)
     if(start && end) // We have a whole line
     {
       size += sizeof(SDL_Surface**);
+      size_len += sizeof(size_t);
       lines = realloc(lines, size);
+      len_arr = realloc(len_arr, size_len);
 
       // Call the same function on x.
-      SDL_Surface **line = segmentation_x(image, start_y, end_y);
-      lines[len] = line;
-      len ++;
+      size_t len;
+      SDL_Surface **line = segmentation_x(image, start_y, end_y, &len);
+      lines[nb_arr] = line;
+      len_arr[nb_arr] = len;
+      (nb_arr) ++;
       start = 0; // Start over with a new line.
       end = 0;
     }
   }
-  return lines;
+  SDL_Matrix mat = {lines, nb_arr, len_arr};
+  return mat;
 }
 
-SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y)
+SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y, size_t *len)
 {
   size_t size = sizeof(SDL_Surface); // Value used for realloc'ing memory.
   SDL_Surface **characters = NULL; // Array to store surfaces of characters.
-  size_t len = 0; // Length of the array.
+  *len = 0; // Length of the array.
   // Temporary variables to get x coordinates of characters.
   int start_x = 0;
   int end_x = 0;
@@ -97,8 +103,8 @@ SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y)
       // Add the surface in an array.
       size += sizeof(SDL_Surface*);
       characters = realloc(characters, size);
-      characters[len] = dst;
-      len ++;
+      characters[*len] = dst;
+      (*len) ++;
 
       start = 0;
       end = 0;

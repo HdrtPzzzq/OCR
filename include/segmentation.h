@@ -4,9 +4,15 @@
 #include <SDL/SDL.h>
 #include "pixelBMP.h"
 
-SDL_Surface ***segmentation_y(SDL_Surface *image);
+typedef struct SDL_Matrix{
+  SDL_Surface ***lines;
+  size_t nb_arr;
+  size_t *len_arr;
+} SDL_Matrix;
 
-SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y);
+SDL_Matrix segmentation_y(SDL_Surface *image);
+
+SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y, size_t *len);
 
 int is_line_white(SDL_Surface *image, int y);
 

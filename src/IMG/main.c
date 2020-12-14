@@ -36,12 +36,16 @@ int main()
   displayBMP(image);
 */
   //|==SEGMENTED_TEST==|
-  SDL_Surface ***lines = segmentation_y(image);
-  for(int i = 0; i < 3; i ++){
-    for(int j = 0; j < 3; j ++)
+  SDL_Matrix mat = segmentation_y(image);
+  size_t nb_arr = mat.nb_arr;
+  size_t *len_arr = mat.len_arr;
+  SDL_Surface ***lines = mat.lines;
+  for(size_t i = 0; i < nb_arr; i ++){
+    for(size_t j = 0; j < len_arr[i]; j ++)
       displayBMP(lines[i][j]);
   }
   free(lines);
+  free(len_arr);
   SDL_FreeSurface(image);
 
   return 0;
