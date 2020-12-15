@@ -4,7 +4,6 @@
 #include <err.h>
 #include "binarization.h"
 #include "displayBMP.h"
-#include "loadBMP.h"
 #include "grey_level.h"
 #include "pixelBMP.h"
 #include "segmentation.h"
