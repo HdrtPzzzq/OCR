@@ -1,5 +1,5 @@
 *.d
 *.o
-images/*
 bin/*
-out
+dep/*
+main

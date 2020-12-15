@@ -2,37 +2,34 @@
 
 CC = gcc
 CPPFLAGS = -MMD
-CFLAGS = -Wall -Wextra -Werror -std=c99 -Iinclude $(shell pkg-config --cflags sdl)
+CFLAGS = -Wall -Wextra -Werror -std=c99 -g -Iinclude $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gtk+-3.0)
 LDFLAGS =
-LDLIBS = -lm $(shell pkg-config --libs sdl)
+LDLIBS = -lm $(shell pkg-config --libs sdl ) $(shell pkg-config --libs gtk+-3.0)
 
-OUT = main xor img
+OUT = net interface
 
-SRC = src/main.c
+NET = $(shell find ./src/NET -name *.c)
+INTERFACE = $(shell find ./src/INTERFACE -name *.c)
 
-IMG = $(shell find ./src/IMG -name *.c)
-XOR = $(shell find ./src/XOR -name *.c)
+ONET = $(NET:.c=.o)
+OINTERFACE = $(INTERFACE:.c=.o)
 
-OIMG = $(IMG:.c=.o)
-OXOR = $(XOR:.c=.o)
+AOBJ = $(ONET) $(OINTERFACE)
 
-OBJ = src/main.o $(OXOR) $(OIMG)
-DEP = $(SRC:.c=.d) $(XOR:.c=.d) $(IMG:.c=.d)
+DEP = $(NET:.c=.d) $(INTERFACE:.c=.d)
 
-.PHONY: all main XOR IMG clean
-all: main
+.PHONY: all NET INTERFACE clean
 
-main: $(OBJ)
-	$(CC) -o main $(OBJ) $(LDLIBS) $(LDFLAGS)
+all: NET INTERFACE
 
-XOR: $(OXOR)
-	$(CC) -o xor $(OXOR) $(LDLIBS) $(LDFLAGS)
+NET: $(ONET)
+	$(CC) -o net $(ONET) $(LDLIBS) $(LDFLAGS)
 
-IMG: $(OIMG)
-	$(CC) -o img $(OIMG) $(LDLIBS) $(LDFLAGS)
+INTERFACE: $(OINTERFACE)
+	$(CC) -o interface $(OINTERFACE) $(LDLIBS) $(LDFLAGS)
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(AOBJ)
 	$(RM) $(DEP)
 	$(RM) $(OUT)
 
