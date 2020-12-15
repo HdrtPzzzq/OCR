@@ -44,7 +44,6 @@ void Layer_Aggregation(Layer *This, double training_inputs[])
         }
         This->aggregation[j] = activationval;    
     }
-    printf("Aggregation : %lf\n",This->aggregation[0]);
  }
 /******************************************************************************/
 
@@ -54,7 +53,6 @@ void Layer_Activation(Layer *This)
     {    
         This->activation_values[j] = sigmoid(This->aggregation[j]);
     }
-    printf("Activation :%lf\n",This->activation_values[0]);
 }
 /******************************************************************************/
 

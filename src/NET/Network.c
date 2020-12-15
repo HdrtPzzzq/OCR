@@ -72,8 +72,6 @@ double  Network_Predict(Network *This, double input_data[])
         }
     }
 
-    printf("%lf|%lf\n",max,This->layers[This->number_l-1]->activation_values[index]);
-    printf("%ld\n",index);
     return index;
 }
 /*******************************************************************************/
@@ -132,7 +130,7 @@ void Network_Backprop(Network *This, double input_data[],double expected_output)
         size_t len_delta = next_layer->size;
 
         double transpose_weights[layer->size * layer->input_size];
-        for(size_t x = 0 ; x < layer->size * layer->input_size; x++ )
+        for(size_t x = 0 ; x < next_layer->size * next_layer->input_size; x++ )
         {
             transpose_weights[x] = next_layer->weights[x];
         }
