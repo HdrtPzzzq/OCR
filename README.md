@@ -1,4 +1,4 @@
-**This project is an archive do not expect anything of this project.**
+# This project is an archive do not expect anything of this project.
 
 The Makefile contains two targets; NET, and INTERFACE.
 Run make NET then ./net to compile and then execcute the neural network part,
