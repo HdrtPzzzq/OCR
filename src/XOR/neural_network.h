@@ -6,6 +6,8 @@ double dactivation(double x);
 size_t RandomSizet(size_t a);
 void RandArray(int arr[], int l);
 void TrainingNetwork();
-
+double create_weight();
+void hidden_init(double arr[][]);
+void outputw_init(double arr[][]);
 
 #endif
