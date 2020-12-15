@@ -1,4 +1,5 @@
 #ifndef LAYER_H
+#define LAYER_H
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -34,8 +35,8 @@ void Layer_Update_weights(Layer *This, double gradient[], double learning_rate);
 
 void Layer_Update_biases(Layer *This, double gradient[], double learning_rate);
 
-void Layer_Update_All(Layer *This, double gradient_weights[], double gradient_biases[], 
-        double learning_rate);
+void Layer_Update_All(Layer *This, double gradient_weights[], double gradient_biases[]
+        , double learning_rate);
 
 void Layer_Clear(Layer *This);
 

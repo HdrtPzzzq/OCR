@@ -20,8 +20,7 @@ void random_weights(double *weight, size_t size, size_t input_size)
     for(double *p = weight; p < weight + size*input_size ; p++ )
     {
         double v = ((double)rand())/((double)RAND_MAX);
-        *p = v;
-        printf("|%lf;%lf|",v,*p);
+        *p = v;       
     }
 }
 /******************************************************************************/

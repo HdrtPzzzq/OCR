@@ -19,7 +19,7 @@ void Layer_Init(Layer *This, size_t size, size_t input_size)
     This->aggregation = malloc(size*sizeof(double));
     This->activation_values = malloc(size*sizeof(double));
     This->activation_primes_values = malloc(size*sizeof(double));
-    This->gradient_weights = malloc(size*input_size*sizeof(double));
+    This->gradient_weights = malloc(size*sizeof(double));
     This->gradient_biases = malloc(size*sizeof(double));
 }
 /******************************************************************************/
@@ -40,21 +40,21 @@ void Layer_Aggregation(Layer *This, double training_inputs[])
         double activationval = This->biases[j];
         for (size_t k=0; k<This->input_size; k++) 
         {
-            activationval += training_inputs[k]*This->weights[k*This->input_size + j];
+            activationval += training_inputs[k]* This->weights[j*This->input_size + k];
         }
-        *(This->aggregation+j) = activationval;
+        This->aggregation[j] = activationval;    
     }
-
-}
+    printf("Aggregation : %lf\n",This->aggregation[0]);
+ }
 /******************************************************************************/
 
 void Layer_Activation(Layer *This)
 { 
     for (size_t j=0; j<This->size; j++) 
     {    
-        *(This->activation_values+j) = sigmoid(This->aggregation[j]);
+        This->activation_values[j] = sigmoid(This->aggregation[j]);
     }
-
+    printf("Activation :%lf\n",This->activation_values[0]);
 }
 /******************************************************************************/
 
@@ -82,7 +82,7 @@ void Layer_Update_weights(Layer *This, double gradient[], double learning_rate)
         for(size_t j = 0; j< This->input_size; j++)
         {
             This->weights[i*This->input_size + j] -= 
-                learning_rate * gradient[i*This->input_size+j];
+                learning_rate * gradient[i];
         }
     }
 }
@@ -117,7 +117,7 @@ void Layer_Free(Layer *This)
 {
         if(This) Layer_Clear(This);
         free(This);        
-        puts("Destruction de la layer .\n");
+        puts("\nDestruction de la layer .");
 }
 
 

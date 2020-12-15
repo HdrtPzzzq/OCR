@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <err.h>
+#include <string.h>
 
 #include "Layer.h"
 
@@ -25,7 +26,7 @@ void get_values(Layer* layer)
     {
         fgets(val, size, Weights);
         strtok(val, "\n");
-        layer->weights = atof(val);
+        *layer->weights = atof(val);
     }
 
     fclose(Weights);
@@ -42,7 +43,7 @@ void get_values(Layer* layer)
     { 
         fgets(val, size, Biases);
         strtok(val, "\n");
-        layer->biases = atof(val);
+        *layer->biases = atof(val);
     }
 
     fclose(Biases);

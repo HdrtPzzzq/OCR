@@ -1,4 +1,5 @@
-#ifndef Network_H
+#ifndef NETWORK_H
+#define NETWORK_H
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -24,15 +25,15 @@ void Network_Feed_Forward(Network *This, double input_data[]);
 
 double  Network_Predict(Network *This, double input_data[]);
 
-double  Network_Evaluate(Network *This, size_t len, double input_data[][784], 
+double  Network_Evaluate(Network *This, size_t len, double input_data[][420], 
         double expected_output[]);
 
 void Network_Backprop(Network *This, double input_data[],double expected_output);
 
-void Network_Train_Batch(Network *This, double input_data[][784], double expected_output[], 
-        double lr);
+void Network_Train_Batch(Network *This, double input_data[][420], double expected_output[], 
+        double lr, size_t len_y);
 
-void Network_Train(Network *This, double input_data[][784], double expected_output[], 
+void Network_Train(Network *This, double input_data[][420], double expected_output[], 
         double steps, double lr, size_t batch_size);
 
 void Network_Clear(Network *This);
