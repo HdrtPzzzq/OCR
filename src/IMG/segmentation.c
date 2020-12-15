@@ -2,6 +2,29 @@
 #include "displayBMP.h"
 #include <stdlib.h>
 
+typedef struct size {
+  size_t h;
+  size_t w;
+} size;
+
+size get_max(SDL_Matrix mat)
+{
+  size max_coo = {0, 0};
+  for(size_t i = 0; i < mat.nb_arr; i ++)
+  {
+    for(size_t j = 0; j < mat.len_arr[i]; j ++)
+    {
+      size_t w = mat.lines[i][j]->w;
+      size_t h = mat.lines[i][j]->h;
+      if (h > max_coo.h)
+        max_coo.h = h;
+      if (w > max_coo.w)
+        max_coo.w = w;
+    }
+  }
+  return max_coo;
+}
+
 SDL_Matrix segmentation_y(SDL_Surface *image)
 {
   size_t size = sizeof(SDL_Surface*); // Value used for realloc'ing memory.
@@ -113,6 +136,31 @@ SDL_Surface **segmentation_x(SDL_Surface *image, int start_y, int end_y, size_t 
   return characters;
 }
 
+void resize_all(SDL_Matrix mat)
+{
+  for (size_t i = 0; i < mat.nb_arr; i ++)
+  {
+    for( size_t j = 0; j < mat.len_arr[i]; j ++)
+    {
+      size max = get_max(mat);
+      SDL_Surface *resized = SDL_CreateRGBSurface(0, max.w, max.h, 32, 0, 0, 0, 0);
+      SDL_Surface * image = mat.lines[i][j];
+      for(size_t y = 0; y < max.h; y ++)
+      {
+        for (size_t x = 0; x < max.w; x ++)
+        {
+          Uint32 pixel;
+          if ((int)x < image->w)
+            pixel = getpixel(image, x, y);
+          else
+            pixel = SDL_MapRGB(image->format, 255, 255, 255);
+          putpixel(resized, x, y, pixel);
+        }
+      }
+      mat.lines[i][j] = resized;
+    }
+  }
+}
 
 int is_line_white(SDL_Surface *image, int y)  // Well entitled function...
 {

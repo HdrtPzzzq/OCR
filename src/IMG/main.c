@@ -37,6 +37,7 @@ int main()
 */
   //|==SEGMENTED_TEST==|
   SDL_Matrix mat = segmentation_y(image);
+  resize_all(mat);
   size_t nb_arr = mat.nb_arr;
   size_t *len_arr = mat.len_arr;
   SDL_Surface ***lines = mat.lines;
