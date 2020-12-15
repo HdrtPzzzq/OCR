@@ -1,3 +1,5 @@
+**This project is an archive do not expect anything of this project.**
+
 The Makefile contains two targets; NET, and INTERFACE.
 Run make NET then ./net to compile and then execcute the neural network part,
 and observe that the output is always 0, at least it compiles.
